@@ -35,3 +35,23 @@ def search_jokes(query: str) -> List[str]:
     data = _get("/jokes/search", {"query": query})
     results = data.get("result", [])
     return [str(item.get("value", "")).strip() for item in results]
+
+
+class JokeClient:
+    """Simple OOP client for the Chuck Norris API.
+
+    Wraps module-level functions so the CLI and tests still work,
+    while demonstrating object-oriented structure.
+    """
+
+    def random(self, category: str | None = None) -> str:
+        return get_random_joke(category)
+
+    def categories(self) -> list[str]:
+        return get_categories()
+
+    def search(self, query: str) -> list[str]:
+        return search_jokes(query)
+
+    def by_id(self, joke_id: str) -> str:
+        return get_joke_by_id(joke_id)

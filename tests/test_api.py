@@ -32,3 +32,15 @@ def test_network_errors_raise_apierror(mock_get):
 def test_search_empty_query_raises():
     with pytest.raises(ValueError):
         api.search_jokes("")
+
+
+def test_jokeclient_uses_functions(monkeypatch):
+    calls = {}
+    def _fake_random(category=None):
+        calls['random'] = category
+        return "ok"
+    import src.api as api
+    monkeypatch.setattr(api, "get_random_joke", _fake_random)
+    client = api.JokeClient()
+    assert client.random("dev") == "ok"
+    assert calls['random'] == "dev"
